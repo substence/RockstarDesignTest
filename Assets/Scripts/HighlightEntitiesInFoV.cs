@@ -4,40 +4,35 @@ using UnityEngine;
 
 public class HighlightEntitiesInFoV : MonoBehaviour
 {
-	
-	// Update is called once per frame
-	void Update ()
+    const int MAX_LINE_OF_SIGHT = 100;
+    const int VIEWING_ANGLE = 60;
+
+    bool IsEnemyInLoS(Vector2 playerPosition, float playerFacingAngle, Vector2 targetPosition)
     {
-		//find all enemies
-        //if enemie is in los
-        //highlight
-	}
+        float distanceToTarget = Vector2.Distance(playerPosition, targetPosition);
 
-    void Highlight()
-    {
-        //Gam
-    }
-
-    int length = 100;
-    int fov = 30;
-
-    bool isEnemyInLoS(Vector2 playerPosition, Vector2 playerdirection, Vector2 targetPosition)
-    {
-        //first we'll check the distance between the player and it's target
-        float distance = start - target;
-        Vector2.Distance(playerPosition, targetPosition);
-
-        //if the distance is greater than the length (line of sight) we'll bail early.
-
-        if (distance > length)
+        //if the distance to that target is greater than the maximum line of sight, then the target is too far away.
+        if (distanceToTarget > MAX_LINE_OF_SIGHT)
         {
             return false;
         }
 
-        //otherwise, we'll check the angle from the player and the target and if it's greater than the player's facingle angle by (fov /2) then we'll bail
+        float angleToTarget = Vector2.Angle(playerPosition, targetPosition);
 
-        enemyPosition
-        float angle = 
-        return false;
+        //compare the absolute difference in the player's facing angle to it's angle to the target and see if it's greater than the viewing angle
+        if (Mathf.Abs(angleToTarget - playerFacingAngle) > VIEWING_ANGLE / 2)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    const int MINIMUM_DISTANCE = 100;
+    Vector2 GetClosestPositionAwayFromStar(Vector2 starPosition, Vector2 flagPosition)
+    {
+        float angleFromFlagToStar = Vector2.Angle(starPosition, flagPosition);
+        angleFromFlagToStar *= Mathf.Deg2Rad;
+        return new Vector2(Mathf.Cos(angleFromFlagToStar) * MINIMUM_DISTANCE, Mathf.Sin(angleFromFlagToStar) * MINIMUM_DISTANCE);
     }
 }
