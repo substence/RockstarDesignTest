@@ -8,15 +8,18 @@ public class RPS : MonoBehaviour
     Player player2;
     const int MAX_ROUNDS = 5;
 
-    void Update ()
+    void Play()
     {
-
         for (int round = 0; round < MAX_ROUNDS;)
         {
+            //Get player weapons for this round
+            player1.UpdatePlayerWeapon();
+            player2.UpdatePlayerWeapon();
+
             Player winner = GetWinner(player1, player2);
             if (winner == null)
             {
-                break;
+                break; // no winner(draw), play again without moving to the next round
             }
             else
             {
@@ -24,7 +27,9 @@ public class RPS : MonoBehaviour
                 round++;
             }
         }
-	}
+        Debug.Log("Player 1 has " + player1.wins + " wins.");
+        Debug.Log("Player 2 has " + player2.wins + " wins.");\
+    }
 
     Player GetWinner(Player player1, Player player2)
     {
@@ -52,6 +57,7 @@ public class RPS : MonoBehaviour
         }
         return Weapons.INVALID;
     }
+}
 
 public enum Weapons
 {
@@ -60,8 +66,10 @@ public enum Weapons
     PAPER,
     SCISSORS
 }
-public class Player
+
+public abstract class Player
 {
     public int wins;
     public Weapons weapon;
+    public abstract void UpdatePlayerWeapon();  //unimplemented. This would populate the weapon based on the player's input
 }
